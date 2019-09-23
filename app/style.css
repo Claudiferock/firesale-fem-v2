@@ -37,8 +37,8 @@ button {
   background-color: rgb(82, 150, 143);
   border: none;
   padding: 0.5em 1em;
-  font-family: 'Roboto', sans-serif;
   color: rgb(252, 254, 254);
+  letter-spacing: .1rem;
 }
 
 button:hover {
