@@ -34,13 +34,16 @@ textarea, input, div, button {
 
 button {
   font-size: 14px;
-  background-color: rgb(181, 220, 216);
+  background-color: rgb(82, 150, 143);
   border: none;
   padding: 0.5em 1em;
+  font-family: 'Roboto', sans-serif;
+  color: rgb(252, 254, 254);
 }
 
 button:hover {
-  background-color: rgb(156, 198, 192);
+  background-color: rgb(242, 179, 132);
+  color: rgb(255, 253, 252)
 }
 
 button:active {

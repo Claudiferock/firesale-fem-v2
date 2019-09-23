@@ -4,10 +4,14 @@ const { app, BrowserWindow } = require('electron');   // switched electron for a
 let mainWindow = null;
 
 app.on('ready', () => {
-    mainWindow = new BrowserWindow();
+    mainWindow = new BrowserWindow({ show: false });
 
     mainWindow.loadFile(`${__dirname}/index.html`);
-    console.timeEnd("Time taken to be ready: ");
+
+    mainWindow.once('ready-to-show', () => {
+        mainWindow.show();
+        console.timeEnd("Time taken to be ready: ");
+    });
 });
 
 console.log('Starting up...');
