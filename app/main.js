@@ -10,8 +10,6 @@ app.on('ready', () => {
 
     mainWindow.loadFile(`${__dirname}/index.html`);
 
-    getFileFromUser();
-
     mainWindow.once('ready-to-show', () => {
         mainWindow.show();
         console.timeEnd("Time taken to be ready: ");
@@ -21,9 +19,11 @@ app.on('ready', () => {
 console.log('Starting up...');
 console.time("Time taken to be ready: ");
 
-const getFileFromUser = () => {
+exports.getFileFromUser = () => {
     const files = dialog.showOpenDialog({
         properties: ['openFile'],
+        buttonLabel: 'Unveil',
+        title: 'Open Fire Sale Document',
         filters: [
             { name: 'Markdown Files', extensions: ['md', 'mdown', 'markdown', 'marcdown'] },
             { name: 'Text Files', extensions: ['txt', 'text'] }
@@ -33,7 +33,11 @@ const getFileFromUser = () => {
     if (!files) return; // this way we avoid undefined if user clicks calcel
 
     const file = files[0];
-    const content = fs.readFileSync(file).toString();
 
-    console.log(content);
+    openFile(file);
+};
+
+const openFile = (file) => {
+    const content = fs.readFileSync(file).toString();
+    mainWindow.webContents.send('file-opened', file, content);
 };
