@@ -37,7 +37,7 @@ exports.getFileFromUser = () => {
     openFile(file);
 };
 
-const openFile = (file) => {
+const openFile = file => {
     const content = fs.readFileSync(file).toString();
     mainWindow.webContents.send('file-opened', file, content);
 };

@@ -1,8 +1,14 @@
+const path = require('path');
+
 const marked = require('marked');
 const { remote, ipcRenderer } = require('electron');
 
+let filePath = null;
+let originalContent = '';
+
 // require in the context of the main process, using remote module
 const mainProcess = remote.require('./main');
+const currentWindow = remote.getCurrentWindow();
 
 const markdownView = document.querySelector('#markdown');
 const htmlView = document.querySelector('#html');
@@ -18,6 +24,17 @@ const renderMarkdownToHtml = markdown => {
   htmlView.innerHTML = marked(markdown, { sanitize: true });
 };
 
+const updateUserInterface = () => {
+  let title = 'Fire Sale';
+
+  if (filePath) {
+    //we use path.basename(filePath) in order to avoid C:/Users/.../file.txt as a title and have only the title
+    title = `${path.basename(filePath)} - ${title}`;
+  } 
+
+  currentWindow.setTitle(title);
+}
+
 markdownView.addEventListener('keyup', event => {
   const currentContent = event.target.value;
   renderMarkdownToHtml(currentContent);
@@ -28,6 +45,11 @@ openFileButton.addEventListener('click', () => {
 });
 
 ipcRenderer.on('file-opened', (event, file, content) => {
+  filePath = file;
+  originalContent = content;
+
   markdownView.value = content;
   renderMarkdownToHtml(content);
+
+  updateUserInterface();
 });
