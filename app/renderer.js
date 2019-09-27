@@ -24,7 +24,7 @@ const renderMarkdownToHtml = markdown => {
   htmlView.innerHTML = marked(markdown, { sanitize: true });
 };
 
-const updateUserInterface = () => {
+const updateUserInterface = isEdited => {
   let title = 'Fire Sale';
 
   if (filePath) {
@@ -32,12 +32,16 @@ const updateUserInterface = () => {
     title = `${path.basename(filePath)} - ${title}`;
   } 
 
+  console.log({ isEdited });
+
   currentWindow.setTitle(title);
 }
 
 markdownView.addEventListener('keyup', event => {
   const currentContent = event.target.value;
+  
   renderMarkdownToHtml(currentContent);
+  updateUserInterface(currentContent !== originalContent);
 });
 
 openFileButton.addEventListener('click', () => {
