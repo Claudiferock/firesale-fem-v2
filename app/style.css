@@ -43,7 +43,8 @@ button {
 
 button:hover {
   background-color: rgb(242, 179, 132);
-  color: rgb(255, 253, 252)
+  color: hsl(20, 80%, 99%);
+  transition: all 80ms ease-out;
 }
 
 button:active {
