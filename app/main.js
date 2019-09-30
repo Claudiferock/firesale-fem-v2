@@ -19,6 +19,7 @@ app.on('ready', () => {
 console.log('Starting up...');
 console.time("Time taken to be ready: ");
 
+// shows popup window to open file
 exports.getFileFromUser = () => {
     const files = dialog.showOpenDialog({
         properties: ['openFile'],
@@ -37,7 +38,36 @@ exports.getFileFromUser = () => {
     openFile(file);
 };
 
+// Saves file
+exports.saveMarkdown = (file, content) => {
+    if (!file) {
+        file = dialog.showSaveDialog({
+            title: 'Save Markdown',
+            defaultPath: app.getPath('desktop'), 
+            filters: [
+                { 
+                    name: 'Markdonw Files',
+                    extensions: ['md', 'mdown', 'markdown', 'marcdown'],
+                },
+                {
+                    name: 'Text Files',
+                    extensions: ['txt', 'text']
+                },
+            ],
+        });
+    }
+
+    if (!file) return;
+
+    fs.writeFileSync(file, content);
+    //To show that you created a new file
+    openFile(file)
+};
+
+// Opens file
 const openFile = file => {
     const content = fs.readFileSync(file).toString();
+    //shows dropdown of recent files
+    app.addRecentDocument(file);
     mainWindow.webContents.send('file-opened', file, content);
 };
