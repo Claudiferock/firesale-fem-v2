@@ -21,7 +21,7 @@ console.time("Time taken to be ready: ");
 
 // shows popup window to open file
 exports.getFileFromUser = () => {
-    const files = dialog.showOpenDialog({
+    const files = dialog.showOpenDialog(mainWindow, {
         properties: ['openFile'],
         buttonLabel: 'Unveil',
         title: 'Open Fire Sale Document',
@@ -41,7 +41,7 @@ exports.getFileFromUser = () => {
 // Saves file
 exports.saveMarkdown = (file, content) => {
     if (!file) {
-        file = dialog.showSaveDialog({
+        file = dialog.showSaveDialog(mainWindow, {
             title: 'Save Markdown',
             defaultPath: app.getPath('desktop'), 
             filters: [
@@ -63,6 +63,19 @@ exports.saveMarkdown = (file, content) => {
     //To show that you created a new file
     openFile(file)
 };
+
+// Saves HTML file
+exports.saveHtml = content => {
+    const file = dialog.showSaveDialog(mainWindow, {
+        title: 'Save HTML',
+        defaultPath: app.getPath('desktop'),
+        filters: [{ name: 'HTML Files', extensions: ['html', 'htm'] }]
+    });
+
+    if (!file) return;
+
+    fs.writeFileSync(file, content);
+}
 
 // Opens file
 const openFile = file => {
